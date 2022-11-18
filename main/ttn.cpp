@@ -463,7 +463,7 @@ static void ttn_set_cnt() {
   // We occasionally mirror our count to flash, to ensure that if we lose power we will at least start with a count that
   // is almost correct (otherwise the TNN network will discard packets until count once again reaches the value they've
   // seen).  We limit these writes to a max rate of one write every 5 minutes.  Which should let the FLASH last for 300
-  // years (given the ESP32 NVS algoritm)
+  // years (given the ESP32 NVS algorithm)
   static uint32_t lastWriteMsec = UINT32_MAX;  // Ensure we write at least once
   uint32_t now = millis();
   if (now < lastWriteMsec || (now - lastWriteMsec) > 5 * 60 * 1000L) {  // write if we roll over (50 days) or 5 mins

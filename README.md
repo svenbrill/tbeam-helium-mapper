@@ -23,7 +23,7 @@ No, you do not.  I put this here because it seems to be the #1 FAQ.  You do not 
 No, you do not.  It's the #2 FAQ.  The Mapper data and coverage maps are not involved in any POC challenges or used for gaming denylists.
 
 ## Supported Hardware
-I tested this software on (many) LilyGo [TTGO T-Beam v1.1](http://www.lilygo.cn/prod_view.aspx?TypeId=50060&Id=1317&FId=t3:50060:3) devices, all on **US915**.  Others have enjoyed success on **EU688** and other worldwide bands, with the matching device.  These are commonly avaialable as "Meshtastic" devices from AliExpress, Amazon, Banggood, eBay, etc, usually as a kit with an unsoldered OLED screen and SMA antenna for around USD $30.00.
+I tested this software on (many) LilyGo [TTGO T-Beam v1.1](http://www.lilygo.cn/prod_view.aspx?TypeId=50060&Id=1317&FId=t3:50060:3) devices, all on **US915**.  Others have enjoyed success on **EU688** and other worldwide bands, with the matching device.  These are commonly available as "Meshtastic" devices from AliExpress, Amazon, Banggood, eBay, etc, usually as a kit with an unsoldered OLED screen and SMA antenna for around USD $30.00.
 
 If you have an older v0.7 board or different region, adjust the configuration to match.  If you have a unique variant and find something not working, open an Issue and provide what information you can.
 
@@ -132,7 +132,7 @@ When moving, the Mapper will send out a packet every time GPS indicates it has m
 
 This is the normal operation of the Mapper in motion: every `MIN_DIST` meters, one Uplink is sent reporting position while the battery charges from USB.  If the speed of motion is fast, it may even result in back-to-back packet sends (at greater distance) limited by the bandwidth of your chosen Spreading Factor (Data Rate) and country restrictions.  (In the United States US915, at SF10, this is about two seconds maximum speed.  In Thailand, it can be 37 seconds or more.)
 
-When the Mapper comes to a stop, staying within `MIN_DIST` meters, it sends a hearbeat ping every `STATIONARY_TX_INTERVAL` seconds (default: 60).  This serves to keep it visible on the map and report battery voltage.  (Too often for you?  Dial up the `STATIONARY_TX_INTERVAL` to a longer interval.)
+When the Mapper comes to a stop, staying within `MIN_DIST` meters, it sends a heartbeat ping every `STATIONARY_TX_INTERVAL` seconds (default: 60).  This serves to keep it visible on the map and report battery voltage.  (Too often for you?  Dial up the `STATIONARY_TX_INTERVAL` to a longer interval.)
 
 After being stationary a long time (parked) with a decreasing battery voltage, we change to a slower pace of "not moving" updates.  This happens after `REST_WAIT` seconds (default: 30 minutes).  In the Rest state, the Mapper transmits every `REST_TX_INTERVAL` seconds (default: 5 minutes).
 
@@ -187,9 +187,9 @@ indicating that the system experienced a normal boot (instead of a timer wakeup 
 Next are some important debugging messages printed at startup, indicating whether the OLED screen, AXP Power Management IC, and GPS were found and initialized.  If these are not found or connected quickly, then there could be a hardware failure, soldering error, or other board-level issue preventing the software from working correctly.
 
 You should see `AXP192 PMU` on the T-Beam, and `SSD1306 OLED display` if a display is installed.  If you see neither of these, the i2c port likely has problems.
-If you expected an OLED display, and none was found, then it may be misconnected.
+If you expected an OLED display, and none was found, then it may be disconnected.
 
-After this are serveral data messages about voltages and settings, largely uninteresting, until you get to..
+After this are several data messages about voltages and settings, largely uninteresting, until you get to..
 
 ### Settings and Credentials
 On startup, the USB Serial port will print the DevEUI, AppID, and AppKey values, suitable for cut & paste entry into the Helium Console for your Device.
@@ -210,12 +210,12 @@ The Mapper will flash the Blue LED at 4Hz and attempt to Join the Helium network
 1. Out of Range: The nearest Helium hotspot can't hear the device, or the device can't hear the response.
 2. Wrong RF configuration or Localization:  The frequency band and protocol must match the local Helium Network, as configured in `platformio.ini`.
 3. The Device keys are not correctly registered in the Helium Console.  Check all three.
-4. The Device was recently added to Console and is still "Pending" or waiting for XOR Filter update to propegate through the blockchain or network.  This can take 20 minutes or more.
+4. The Device was recently added to Console and is still "Pending" or waiting for XOR Filter update to propagate through the blockchain or network.  This can take 20 minutes or more.
 5. Helium network outage.  Any failure in the helium network that prevents Join will hang here, as was seen often in November 2021.
 6. RF or hardware issues.  Disconnected antenna, mismatched antenna frequency, etc.
 
 ### Or, Re-Join
-Once the Mapper joins the Helium network, it stores these Network Key credentials for future use.  Ideally, the Mapper does not have to send a Join request at the next startup, but fetches them from the nonvolatile "Preferences" memory.  To successfully continue with these same credentials, the Mapper needs to continue the Frame Count from prior transmissions, or the Helium network will reject Uplink packets as "Late" (for re-using old Frame Count values).
+Once the Mapper joins the Helium network, it stores these Network Key credentials for future use.  Ideally, the Mapper does not have to send a Join request at the next startup, but fetches them from the non-volatile "Preferences" memory.  To successfully continue with these same credentials, the Mapper needs to continue the Frame Count from prior transmissions, or the Helium network will reject Uplink packets as "Late" (for re-using old Frame Count values).
 
 When you see `(re-used join)` on the screen and serial log, this means no Join Request/Accept packets were sent, and the unit will attempt to use the same credentials.
 
@@ -241,9 +241,9 @@ If your device is new, unused for a long time, or shipped from elsewhere in the 
 The Neo-6M has a dedicated GPS backup battery cell that recharges any time the Mapper is powered on.  This helps retain the GPS state for faster time to first fix.  If your device is new or unused for a long time, this battery is likely dead and will charge with some use.  There's nothing to do but use the Mapper, and you should see fast GPS connections in the future.
 
 #### GPS Bitrate and configuration
-On the Debug/Monitoring UART console, you should also see a message reporting `GPS connected`.   The first time you run this software on hardware that came with Mestastic or other builds, it will automatically try all common baud rates to find the Neo GPS module.  Eventually it will connect, then configure the GPS for the needed NMEA Messages at 115,200 bps, then save the configuration to flash so that subsequent boot is faster.  In any case, you should always see `GPS connected` at startup if you are watching the UART/Monitor serial data.
+On the Debug/Monitoring UART console, you should also see a message reporting `GPS connected`.   The first time you run this software on hardware that came with Meshtastic or other builds, it will automatically try all common baud rates to find the Neo GPS module.  Eventually it will connect, then configure the GPS for the needed NMEA Messages at 115,200 bps, then save the configuration to flash so that subsequent boot is faster.  In any case, you should always see `GPS connected` at startup if you are watching the UART/Monitor serial data.
 
-This means the Mapper is receving NMEA messages at the expected bitrate, but it may not yet have a 3D position fix from the GPS.
+This means the Mapper is receiving NMEA messages at the expected bitrate, but it may not yet have a 3D position fix from the GPS.
 
 Note that you never need to load or run special "GPS Reset" scripts to change the GPS settings.  This build will find and configure the GPS from any known state, including Meshtastic builds.
 
@@ -256,7 +256,7 @@ Check the antenna cable connection to the board.  The U.FL connector is fragile,
 
 Ensure the unit has good power, using a charged LiIon cell for power.  It needs to stay on for 15 minutes or more without interruption.
 
-If you see a blinking Red LED from the GPS, but the Mapper software does not have a fix, reporting `*** NO GPS ***`, then there is a software issue between the ESP32 and GPS.  You can debug this further by selecting `USB GPS` from the menu and inspecting the NMEA sentences from the GPS to the UART console.  You may also run Ublox tools this way, such as U-Center to study the GPS module behiavor.
+If you see a blinking Red LED from the GPS, but the Mapper software does not have a fix, reporting `*** NO GPS ***`, then there is a software issue between the ESP32 and GPS.  You can debug this further by selecting `USB GPS` from the menu and inspecting the NMEA sentences from the GPS to the UART console.  You may also run Ublox tools this way, such as U-Center to study the GPS module behavior.
 
 If `USB GPS` does not relay any NMEA sentences from the unit, then something is wrong in unusual ways.  Reset the board and ensure that "GPS Connected" is shown during boot.  It is not common for GPS modules to be defective, so keep trying different things and ask `#mappers` for ideas.
 
@@ -374,7 +374,7 @@ This build is a modification of work by many experts, with input from the [Heliu
 
 The Fork history here in Github shows the lineage and prior work, including  https://github.com/helium/longfi-arduino/tree/master/TTGO-TBeam-Tracker
 
-This code was originally developed for use on The Things Network (TTN) it has been editied/repurposed for use with the Helium Network.
+This code was originally developed for use on The Things Network (TTN) it has been edited/repurposed for use with the Helium Network.
 
 This version is based on a forked repo from github user [kizniche] https://github.com/kizniche/ttgo-tbeam-ttn-tracker. Which in turn is based on the code from [xoseperez/ttgo-beam-tracker](https://github.com/xoseperez/ttgo-beam-tracker), with excerpts from [dermatthias/Lora-TTNMapper-T-Beam](https://github.com/dermatthias/Lora-TTNMapper-T-Beam) to fix an issue with incorrect GPS data being transmitted to the network. Support was also added for the 915 MHz frequency (North and South America). [lewisxhe/TTGO-T-Beam](https://github.com/lewisxhe/TTGO-T-Beam) was referenced for enabling use on the newer T-Beam board (Rev1).
 
@@ -389,7 +389,7 @@ NOTE: There are now 2 versions of the TTGO T-BEAM, the first version (Rev0) and 
 
 2. Add the PlattformIO extension within VS Code (https://platformio.org/install/ide?install=vscode)
 
-3. Check Device Manager if a serialdevice appear on conntecting the T-Beam. If nothing appears a driver for the USB to serial Adpater need to be installed.(https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers)
+3. Check Device Manager if a serial device appear on connecting the T-Beam. If nothing appears a driver for the USB to serial Adapter need to be installed.(https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers)
 
 3. Check and edit platformio.ini to use the right bandplan for your region.
 
