@@ -28,7 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Version
 // -----------------------------------------------------------------------------
 #define APP_NAME "MaxP Mapper"
-#define APP_VERSION "1.7.7"  // 2022-May-8
+#define APP_VERSION "1.7.8"  // 2022-Nov-18
 
 // -----------------------------------------------------------------------------
 // CONFIGURATION
@@ -59,7 +59,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // so we want to avoid it as much as possible. There is no other motion sensor, so if we make it too long,
 // we miss the first minutes of each motion while sleeping.
 // Note that USB Power will prevent this low-power sleep, and also wake us up from it.
-// A button press will also wake from sleep, but takes some time to initialise and re-aquire
+// A button press will also wake from sleep, but takes some time to initialise and re-acquire
 #define SLEEP_WAIT          (2 * 60 * 60)  // If we STILL haven't moved in this long, turn off the GPS to save power
 // For a vehicle application where USB Power appears BEFORE motion, this can be set very high without missing anything:
 #define SLEEP_TX_INTERVAL   (1 * 60 * 60)  // Wake up and check position every now and then to see if movement happened
@@ -115,11 +115,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define SEND_GPSLOST_UPLINKS 0  // GPS Lost messages
 #endif
 #ifndef SEND_STATUS_UPLINKS
-#define SEND_STATUS_UPLINKS  0  // USB Connnect/disconnect messages
+#define SEND_STATUS_UPLINKS  0  // USB Connect/disconnect messages
 #endif
 
 // -----------------------------------------------------------------------------
-// Less common Configuration iteams
+// Less common Configuration items
 // -----------------------------------------------------------------------------
 
 // Select which T-Beam board is being used. Only uncomment one.

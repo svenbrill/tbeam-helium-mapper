@@ -554,7 +554,7 @@ void scanI2Cdevice(void) {
         Serial.println("AXP192 PMU");
       }
     } else if (err == 4) {
-      Serial.print("Unknow i2c device at 0x");
+      Serial.print("Unknown i2c device at 0x");
       if (addr < 16)
         Serial.print("0");
       Serial.println(addr, HEX);
@@ -772,7 +772,7 @@ void setup() {
     screen_setup(oled_addr);
   is_screen_on = true;
 
-  // GPS power on, so it has time to setttle.
+  // GPS power on, so it has time to settle.
   axp.setPowerOutPut(AXP192_LDO3, AXP202_ON);
 
   // Show logo on first boot (as opposed to wake)

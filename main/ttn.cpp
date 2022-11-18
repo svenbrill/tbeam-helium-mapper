@@ -328,8 +328,11 @@ void ttn_join(void) {
 #elif defined(CFG_au915)
 
   // set sub band for AU915
+  // before 2022-11-17 Helium was using FSB2 CH 8-15 (916.8 - 918.2 MHz uplink)
   // https://github.com/TheThingsNetwork/gateway-conf/blob/master/AU-global_conf.json
-  LMIC_selectSubBand(1);
+  // LMIC_selectSubBand(1);
+  // after 2022-11-17 Helium switched to DualPlan using FSB6 CH 40-47 (923.2 - 924.6 MHz uplink)
+  LMIC_selectSubBand(5);
 
 #endif
 
@@ -460,7 +463,7 @@ static void ttn_set_cnt() {
   // We occasionally mirror our count to flash, to ensure that if we lose power we will at least start with a count that
   // is almost correct (otherwise the TNN network will discard packets until count once again reaches the value they've
   // seen).  We limit these writes to a max rate of one write every 5 minutes.  Which should let the FLASH last for 300
-  // years (given the ESP32 NVS algoritm)
+  // years (given the ESP32 NVS algorithm)
   static uint32_t lastWriteMsec = UINT32_MAX;  // Ensure we write at least once
   uint32_t now = millis();
   if (now < lastWriteMsec || (now - lastWriteMsec) > 5 * 60 * 1000L) {  // write if we roll over (50 days) or 5 mins
