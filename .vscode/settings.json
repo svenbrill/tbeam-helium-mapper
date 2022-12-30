@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "system_error": "cpp",
+        "algorithm": "cpp",
+        "vector": "cpp",
+        "new": "cpp",
+        "memory": "cpp",
+        "istream": "cpp",
+        "functional": "cpp"
+    }
+}

@@ -1,20 +1,21 @@
 <!-- ## TTGO T-Beam Tracker for The Things Network and/or The Helium Network  -->
-# TTGO T-Beam Mapper for the Helium LoRaWAN Network.
+# LILYGO T-Beam Mapper for the Helium LoRaWAN Network.
+
 by [Max-Plastix](https://github.com/Max-Plastix/tbeam-helium-mapper/)
 
-### TL;DR
-This code loads onto LilyGo TTGO T-Beam v1.1 board to make a Helium Network Mapper.  To build one: download this build, configure some files, and upload it to your device.  Go travel the world to contribute to the Helium Network Coverage Maps!
+This code loads onto LilyGo TTGO T-Beam v1.1 board to make a Helium Network Mapper. To build one: download this build, configure some files, and upload it to your device.  Go travel the world to contribute to the Helium Network Coverage Maps!
 
 ## Purpose
-The goal of this software is to have a **TTGO T-Beam** Mapper that's ideally suited to walking or driving, taking cues from the USB Power source and movement for activity level.  
 
-This device uploads GPS coordinates from the TTGO T-Beam to the Helium network, be used for tracking and determining signal coverage of LoRaWAN gateways and hotspots. 
-With this software and a T-Beam device, one can contribute to the [Helium Network](https://www.helium.com) Mapper or Cargo projects. 
+The goal of this software is to have a **TTGO T-Beam** Mapper that's ideally suited to walking or driving, taking cues from the USB Power source and movement for activity level.
+
+This device uploads GPS coordinates from the TTGO T-Beam to the Helium network, be used for tracking and determining signal coverage of LoRaWAN gateways and hotspots.
+With this software and a T-Beam device, one can contribute to the [Helium Network](https://www.helium.com) Mapper or Cargo projects.
 Details for the Mapper project can be found [here](https://mappers.helium.com/) and details for Cargo can be found [here](https://cargo.helium.com/).  It also works with [Coverage Map](https://coveragemap.net/heatmap/), a new Heatmap view of Helium hotspots and coverage.
 
 The Mapper is intended to be highly active while the vehicle is in motion, and quieter when the vehicle is stationary.    By default, it is not miserly with Data Credits.  If you want to conserve Data Credits or battery power, tune the configuration to send packets less frequently.
 
-### But do I get PAID for Mapping?!
+### But do I get PAID for Mapping?
 
 No, you do not.  I put this here because it seems to be the #1 FAQ.  You do not earn HNT or Data Credits by mapping.  Mapping costs you very little -- One Penny (USD $0.01) for every thousand mapping packets.  It helps the Helium network by providing a coverage map, and it helps you by providing clarity on your own local Helium environment.  It's all volunteer.
 
@@ -23,17 +24,20 @@ No, you do not.  I put this here because it seems to be the #1 FAQ.  You do not 
 No, you do not.  It's the #2 FAQ.  The Mapper data and coverage maps are not involved in any POC challenges or used for gaming denylists.
 
 ## Supported Hardware
+
 I tested this software on (many) LilyGo [TTGO T-Beam v1.1](http://www.lilygo.cn/prod_view.aspx?TypeId=50060&Id=1317&FId=t3:50060:3) devices, all on **US915**.  Others have enjoyed success on **EU688** and other worldwide bands, with the matching device.  These are commonly available as "Meshtastic" devices from AliExpress, Amazon, Banggood, eBay, etc, usually as a kit with an unsoldered OLED screen and SMA antenna for around USD $30.00.
 
 If you have an older v0.7 board or different region, adjust the configuration to match.  If you have a unique variant and find something not working, open an Issue and provide what information you can.
 
 ### Semtech LoRa Radio
+
 This build uses the [MCCI Catena LMIC Library](https://github.com/mcci-catena/arduino-lmic) for LoRaWAN on the Semtech SX1276 or SX1272 radio modules.
 
-Note that the T-Beam device with a [U.FL / I-PEX](https://www.hirose.com/product/series/U.FL#) LoRa antenna connector and uBlox NEO-8M GPS module comes with a Semtech SX1262 radio, which is NOT supported by the LMIC library.  
+Note that the T-Beam device with a [U.FL / I-PEX](https://www.hirose.com/product/series/U.FL#) LoRa antenna connector and uBlox NEO-8M GPS module comes with a Semtech SX1262 radio, which is NOT supported by the LMIC library.
 **Do Not Buy** [this incorrect device](https://www.amazon.com/T-Beam-NEO-M8N-Wireless-Bluetooth-Display/dp/B07X2SNNGQ) for use on Helium!  It will not work.
 
 ### OLED Display
+
 Most T-Beam units arrive with no OLED Display attached.  You **can** operate the mapper without an OLED display, if you would like.  Of course, the status and menu will be invisible, but there may be applications where a display is not required.
 
 The most common OLED Display used is a 0.96" screen with SSD1306 controller.   You may also use 1.3" displays, or displays with an SH1106 controller.  The software should auto-detect the correct controller protocol and display i2c address, but if you have an unusual display, file an issue to see if it can be supported.   When an OLED display is installed, you should see the detected type and address in the startup messages on UART.
@@ -44,22 +48,49 @@ Since the display is not pre-installed, the buyer must solder the 4-pin connecti
 
 If you incorrectly power the OLED, short connections, or damage the Pin 21/22 connections (i2c), it is very likely that both the OLED and the AXP Power management unit are unreachable, and the board may fail in unexpected ways.  It's a good idea to program the device and check the UART Monitor output before installing the OLED, for some confidence that the board works before soldering.  (Nobody actually does this, but it's a good idea.)
 
-# Mandatory Configuration
+## Web Configuration
+
+You can get pre-compiled firmware in [github actions](https://github.com/Xinyuan-LilyGO/tbeam-helium-mapper/actions), customers no longer need to compile the source code.
+
+### Naming Rules
+
+```
+{project name}_{debug type}_{band}_{date}.bin
+```
+
+### Web Operation
+
+1. Press and hold the middle button to reset the device and wait for the red light to come on.
+
+2. Use a PC or mobile phone to connect to the hotspot of `LILYGO-XXXX`, 
+
+3. Visit `http://http://lilygo.local` in your browser
+
+![](img/web_configuration.jpg)
+
+4. According to your own needs, modify the relevant configuration and save it.
+
+5. Reset the device, and the device will enter the mapper normally.
+
+## Mandatory Configuration
+
 Before Buliding and Uploading, you will probably want to inspect or change some items in these three files:
   - `platformio.ini`
   - `main/configuration.h`
   - `main/credentials.cpp`
-The comments and text below will guide you on what values to look out for.  
+The comments and text below will guide you on what values to look out for.
 
 ### Geographic Region, and Frequency
 By default, this build is for the **US915** region.  Change the declaration in `platformio.ini` for a different locale, to select the correct operating rules and frequency for your country.
 
 ### PlatformIO Communication port
+
 You might have to adjust the COM Port in `platformio.ini` for Uploading and Monitoring if PlatformIO doesn't auto-detect your port correctly.  If you have a single T-Beam on a Windows computer, PlatformIO will usually auto-detect it correctly.  If you have a bunch of Serial USB devices, unusual USB topography, or weird device drivers, you might have to set this to a fixed port.  Note that Upload and Monitor are set separately, and have different auto-detection logic.
 
 On MacOS, it can be significantly more complicated to connect PlatformIO to your device.  Ask in the Discord for help.
 
 ### Helium Device IDs
+
 Each LoRaWAN device on Helium is identified by the three OTAA values used in Joining the network: `DevEUI`, `AppEUI`, and `AppKey`.
 
 You should choose your own private `AppKey` value in `credentials.cpp`. Either take the random value generated by the new Console Device entry, or make up one of your own.  Read the notes in `credentials.cpp` for details.  The value in the build must match the value in Console, regardless of how you achieve that.
@@ -67,62 +98,76 @@ You should choose your own private `AppKey` value in `credentials.cpp`. Either t
 By default, the `DevEUI` is generated automatically to be unique to each unit, but you may want to hardcode it in `credentials.cpp` instead.  There is an explanation there of why you might want to go either way.
 
 ### Mapper uplink period and behavior
+
 Read through the comments in `configuration.h` to see if the default Mapper behavior suits your needs, especially in the area of default time/distance between Uplink packets.
 
-# Building and Programming
+## Building and Programming
+
 This code started off as an Arduino IDE project, with `.ino` filenames, but the complexity of managing installed libraries in Arduino IDE made it difficult to sustain.   Now, the code must be built with PlatformIO and Visual Studio Code.  These is an excellent free/open-source IDE for ESP32 platforms, and allows each project to pull in the required libraries to complete the build, as well as program it into the device.
 
 There are excellent guides to installing and using PlatformIO, but for this project, your goal is to open the project, edit the configuration files, and then select `Build` and `Upload` to program the T-Beam device.
 
-## MacOS Guide
+### MacOS Guide
+
 Building and programming with PlatformIO on MacOS is mostly the same, but has some unique challenges.  `@Rob Cryft` wrote this excellent guide on ["Getting Started with Helium Mapping"](https://levelup.gitconnected.com/getting-started-with-helium-mapping-2833914c4d3) that walks through the whole process on Mac.
 
-# Battery life and power consumption
+## Battery life and power consumption
+
 The T-Beam is not the lowest-power Mapper device, because it has a powerful dual-core ESP32 CPU, Power Management IC (PMIC or PMU), and other design decisions that lead to a pretty high operating current of 110mA or so.
 
 There is an excellent Lithium-Ion 18650 battery management and charger built-in, so you can install a battery cell, and operate it from USB power while it charges and maintains the battery.  The USB port can draw up to 1 Amp, with 750mA or so going to battery charging.
 
-## Battery Selection
+### Battery Selection
+
 If you plan to run the Mapper primarily on battery with infrequent charging, you will want a battery with the highest mAh (milliamp-hour) rating, typically 3000 mAh or more.  Some battery cells like Sony's excellent VTC6, are optimized for very high current discharge (heaters, drones, scooters).  These are expensive, and may make other compromises in capacity.  You don't need high current at all, so look for a good balance of cost and capacity.
 
 If you expect to have USB power available most of the time, then the cheapest 18650 cells will do just fine -- don't feel bad about using an old or low-capacity one.
 
 ### Battery Fitment
+
 The included battery holder in the TTGO T-Beam is **small** and **tight**.  Your battery cell must have **NO Protruding bump** or nipple on the Positive end.  Look for a flat or low-profile positive end.  (If you must, you may be able to crush the spring-terminals at the ends of the battery holder, but this should be done carefully to avoid damaging the attached PCB or cracking the holder.)
 
 Always insert the cell carefully and deliberately, noting the `+` and `-` orientation but also supporting the PCB to avoid bending the whole assembly with force.
 
 Some battery cells have a built-in Protection Circuit, advertised as "protected" or safe cells.  These batteries are longer in size, and won't easily fit in the battery holder.
 
-## Runtime and Battery Life
+### Runtime and Battery Life
+
 While the T-Beam Mapper is typically USB powered from a vehicle, it can run for weeks from the built-in 18650 cell responding to occasional movement.
 
 The GPS receiver is the single largest power consumer on the Mapper, so settings that allow for more GPS-off time will save battery.
 
-## Runtime
+#### Runtime
+
 It depends on configuration, of course, but here's a ballpark figure:   Without any sleep, the fully-operating Mapper should track for about **24 hours of nonstop movement**. (3000mAh cell, 105mA operating current, reasonable battery margins and uplink rate)
 
 When mostly stationary, the mapper can wait for movement or events for about a **month**!  (3000mA cell, mostly 2.23mA sleep, some wake and activity.)
 
-## Operating power
+#### Operating power
+
 In the full-operating state, with the GPS tracking, Mapper uplinks, and OLED display on, the T-Beam draws about 100 to **120mA** from the 18650 cell.
 (Searching for GPS fix is the highest power, 120mA, and when it has a solid fix, closer to 110mA.)
 There is a little extra power consumed for a short while as it charges the GPS coin cell automatically.
 
-### OLED Screen OFF
+#### OLED Screen OFF
+
 Turning off the OLED Display is done more to save the screen from pixel burn-in than to save power.  It draws just under 10mA when lit with text display, so the Mapper drops to about **101.6mA** when the screen is off.
 
-### LoRa power?
+#### LoRa power?
+
 Uplink transmissions use more power (200mA), but they are usually short and infrequent.  Back-to-back SF10 transmissions could start to weigh on battery life, of course.
 
-### Rest or Sleep
+#### Rest or Sleep
+
 With the GPS and OLED off, and the ESP32 waiting for USB power, button press, or movement checks, it is in the lowest-power operating state.
 This draws **2.23mA** from the battery.
 
-### Power Off
+#### Power Off
+
 Powered off, the circuit still draws **3.22 μA (micro-amps)**. Not significant, but not zero.  Remove the battery cell at about half to 80% charge for long-term storage longer than a month or two.
 
-# Operation: How it Works
+## Operation: How it Works
+
 When your car is started, and USB Power appears, the Mapper will power on, acquire GPS, and continue mapping.
 It re-uses the last network Join state for faster connection and fewer packets.
 
@@ -142,11 +187,11 @@ Eventually, the ~100mA power drain of the mapper (with OLED screen & GPS) runs t
 
 Regardless of battery or sleep state, the Mapper will power on and resume when USB power appears.
 
-# Detailed Operation
+## Detailed Operation
 
-## Buttons
+### Buttons
 
-The TTGO T-Beam has three buttons on the underside: 
+The TTGO T-Beam has three buttons on the underside:
 1. Power: Nearest the USB connector is the Power button.
 - Menu: **short press** while on will enter the Menu display.  Use the Power button to step through options, and the **Middle** button to select a menu entry.
 - Off: **long press** on this button will turn the unit completely off (5 seconds).
@@ -157,9 +202,12 @@ The TTGO T-Beam has three buttons on the underside:
 3. Reset
 - The button furthest from USB is the Reset button.  It instantly reboots the device, and is not handled by software at all.
 
-## USB Serial (UART) messages
+### USB Serial (UART) messages
+
 The device outputs debugging information on the USB Serial connection at 115200bps.
-### ESP32 Bootloader
+
+#### ESP32 Bootloader
+
 On powerup or reset, the very first messages will be from the Bootloader built into the ESP system.  This is before any Mapper software runs and should look something like this:
 ```
 ets Jul 29 2019 12:21:46
@@ -177,7 +225,8 @@ entry 0x400806a8
 
 If you see garbage text, line noise, or nothing at all, double check that both the monitoring port and bitrate (115200,8,N,1) are configured correctly in your terminal interface.
 
-### Mapper System Startup
+#### Mapper System Startup
+
 After the bootloader, the first message from this Mapper software will be:
 ```
 BOOT #1!  cause:0 ext1:00000000
@@ -191,11 +240,12 @@ If you expected an OLED display, and none was found, then it may be disconnected
 
 After this are several data messages about voltages and settings, largely uninteresting, until you get to..
 
-### Settings and Credentials
+#### Settings and Credentials
+
 On startup, the USB Serial port will print the DevEUI, AppID, and AppKey values, suitable for cut & paste entry into the Helium Console for your Device.
 For some, this is the easiest way to configure a new device.  Upload the software, monitor the first boot, then cut & paste the values from the messages into the Console "New Device" setup.
 
-#### Saved Preferences
+##### Saved Preferences
 The Mapper will retain certain settings across power cycles.
 * Minimum distance
 * Stationary Tx Interval (min time)
@@ -214,7 +264,7 @@ The Mapper will flash the Blue LED at 4Hz and attempt to Join the Helium network
 5. Helium network outage.  Any failure in the helium network that prevents Join will hang here, as was seen often in November 2021.
 6. RF or hardware issues.  Disconnected antenna, mismatched antenna frequency, etc.
 
-### Or, Re-Join
+### Re-Join
 Once the Mapper joins the Helium network, it stores these Network Key credentials for future use.  Ideally, the Mapper does not have to send a Join request at the next startup, but fetches them from the non-volatile "Preferences" memory.  To successfully continue with these same credentials, the Mapper needs to continue the Frame Count from prior transmissions, or the Helium network will reject Uplink packets as "Late" (for re-using old Frame Count values).
 
 When you see `(re-used join)` on the screen and serial log, this means no Join Request/Accept packets were sent, and the unit will attempt to use the same credentials.
@@ -227,7 +277,7 @@ There are some instances where this is problematic or not correct:
 
 At any time, you can select `Full Reset` in the system menu to discard these keys, reset the device, and Join fresh.
 
-## GPS Connection and Issues
+### GPS Connection and Issues
 The typical GPS operation is to power on, search the sky for satellites, and get a 3D fix in 10 seconds or less.  3 to 5 seconds is common.
 
 You should see a **Red LED** blinking once per second on the far right side of the T-Beam (away from the OLED).  If this Red LED is not blinking, the GPS does not have a fix and no Mapper packets will be sent.
@@ -260,7 +310,7 @@ If you see a blinking Red LED from the GPS, but the Mapper software does not hav
 
 If `USB GPS` does not relay any NMEA sentences from the unit, then something is wrong in unusual ways.  Reset the board and ensure that "GPS Connected" is shown during boot.  It is not common for GPS modules to be defective, so keep trying different things and ask `#mappers` for ideas.
 
-## LED Indicators
+### LED Indicators
 
 The T-Beam has three LEDs.  Unfortunately, two of them are underneath the typical OLED screen placement, so might be hard to see or concealed by a case.
 
@@ -271,12 +321,12 @@ The T-Beam has three LEDs.  Unfortunately, two of them are underneath the typica
 * Off: Normal operation, nothing going on.
 3. ESP Red LED.  The Red LED is not very bright or easy to see.  Mapper lights this LED when a Confirmation request has been sent, and then turns the LED off when the confirmation Ack was received.  This is a handy visual at-a-glance indicator that the unit is expecting to receive an Ack from the network.  If you see this LED remain lit for an extended time, it means the network might be unreachable.
 
-## OLED Screen Display
+### OLED Screen Display
 The T-Beam usually comes as a kit with a 0.96" SSD1306 OLED screen that you must solder to power & i2c pins.
 
 The OLED screen is always on when operating, as it uses only 10mA.
 
-### Status Bar
+#### Status Bar
 Operating Status is shown in the top two rows, with a running 4-line message log in the region below the line.
 
 The top status line alternates between two displays every few seconds:
@@ -289,8 +339,9 @@ The top status line alternates between two displays every few seconds:
 
 The second line shows the current operating parameters.. Time Interval (seconds), Distance Interval (meters), and Spreading Factor / Bandwidth used for Uplink.
 
-### Message Log
-The lower part of the OLED screen shows a scrolling display of four messages.  
+#### Message Log
+
+The lower part of the OLED screen shows a scrolling display of four messages.
 Most often, it shows the last Uplink packet sent:
 * Frame Count is the first number, which you can match to the Uplink packet shown in Helium Console.
 * The Trigger that caused this Uplink message: `T` for Time, `D` for Distance, or `>` for menu requested "Just Send".
@@ -308,7 +359,7 @@ for Frame Count 1850, a time-triggered packet after 2 minutes and only 1 meter a
 
 How often Acks are requested is configurable, defaulting to one-every-ten.
 
-# Uplink Payload
+## Uplink Payload
 The Payload Port and byte content have been selected to match the format used by CubeCell mappers as well.
 
 A custom Decoder Function translates the payload bytes into a set of JSON values required by the Integrations for both Mapper and Cargo.
@@ -316,14 +367,14 @@ This turns the Base64 Payload into values for Lat, Long, Altitude, Speed, Batter
 
 This [Decoder Function](https://github.com/Max-Plastix/tbeam-helium-mapper/blob/main/console-decoders/unified_decoder.js) can be pasted directly into the Console custom function.  Do not use Decoder functions from other builds or instructions!  The Uplink decoding is specific to the software that made the packet, so it has to match.  (Note that HDOP is not sent in this data.)
 
-## Grafana integration for custom maps
+### Grafana integration for custom maps
 
 If you want to maintain your own device map, there is an excellent [Grafana guide](https://friendsoflittleyus.nl/grafana-helium-gps-tracker-on-raspberry-pi/) here and additional information and [template scripts](https://github.com/takeabyte/helium_mapper_grafana) by @takeabyte (`@friends just call me bob`) available.
 
-# Downlink
+## Downlink
 This builds adds the option to reconfigure the Mapper remotely via Helium Downlink (network to device).  You can change the maximum Time Interval, Distance, and Battery Cut-off voltage remotely.
 
-#### Format your Downlink Payload.
+### Format your Downlink Payload.
 
 You can use the `console-decoders/downlink_encoder.py` Python script to convert your intent into a Base64 Payload.
 ```
@@ -349,7 +400,7 @@ AEsCWAA=
 ```
 That last output `AEsCWAA=` is the Base64-encoded payload, ready to use.
 
-#### Queue the Downlink packet for transmission
+### Queue the Downlink packet for transmission
 Paste that payload into the Helium Console under the Downlink panel for that device.  Select a specific device, then the "Cloud Down-arrow" icon on the right ("Send a manual downlink to this device") to open the Downlink panel.
 
 Leave FPort set to the default (1), and type as default (Base64).
@@ -358,7 +409,7 @@ Queue it for transmission using the Cloud down-arrow button, and the packet shou
 When the mapper next reports (uplink), it will receive this directive and show the updates on-screen.
 To rush things along, you can cause an immediate Uplink (& Downlink) by pressing the middle button on the TTGO.
 
-#### Allowed values
+### Allowed values
 Setting any value to zero will leave the present value unchanged by the downlink.
 Maximum Distance interval can be 1 to 65,534 meters.  Time interval can be 1 to 65,534 seconds.  A special time interval of `-1` indicates that you want to remove any override and revert to the time interval in the software build configuration.
 
@@ -366,9 +417,7 @@ Battery voltage cutoff can range from 2.0 to 4.5 volts.  If you set a cutoff hig
 
 None of the Downlink values persist across power-off & on; the device always reverts to compiled-in values on startup.
 
--------------
-
-# History and Credit
+## History and Credit
 
 This build is a modification of work by many experts, with input from the [Helium Discord](https://discord.gg/helium) `#mappers` community.  Thanks to @Kicko, Fizzy, and @tmiklas especially, along with the work done on similar builds for the Heltec CubeCell mappers and Helium Integrations.  The helpful text below is quoted from prior forks:
 

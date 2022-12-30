@@ -5,7 +5,7 @@
 #error "Only OTAA is supported for Helium!"
 #endif
 
-/* 
+/*
 This is where you define the three key values that map your Device to the Helium Console.
 All three values must match between the code and the Console.
 
@@ -32,14 +32,14 @@ in the Console, then click the arrows to expand the values with comma separators
 // Note: If all values are zero, the DevEUI will be generated automatically based on the device macaddr [Recommended!]
 uint8_t DEVEUI[8] = {
     /* lsb */ 0, 0, 0, 0, 0, 0, 0, 0
-    }; 
+};
 
 // This value is commonly shared between many devices of the same type or server.
-const uint8_t PROGMEM APPEUI[8] = {
-    /* lsb */ 0xA0, 0x2E, 0x8E, 0x90, 0xBF, 0xF9, 0x81, 0x60
-    };  
+uint8_t APPEUI[8] = {
+    /* lsb */ 0, 0, 0, 0, 0, 0, 0, 0
+};
 
 // The key shown here is the Semtech default key.  You should probably change it to a lesser-known (random) value
-const uint8_t PROGMEM APPKEY[16] = {
-    /* msb */ 0xCF, 0x4B, 0x3E, 0x8F, 0x8F, 0xCB, 0x77, 0x9C, 0x8E, 0x1C, 0xAE, 0xE3, 0x11, 0x71, 0x2A, 0xE5
-    }; 
+uint8_t APPKEY[16] = {
+    /* msb */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+};
