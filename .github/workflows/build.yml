@@ -6,6 +6,7 @@ on:
       - "platformio.ini"
       - "data/**"
       - ".github/workflows/build.yml"
+      - "scripts/merge_bin.py"
 
   pull_request:
     paths:
@@ -13,6 +14,7 @@ on:
       - "platformio.ini"
       - "data/**"
       - ".github/workflows/build.yml"
+      - "scripts/merge_bin.py"
 
 jobs:
   platformio:

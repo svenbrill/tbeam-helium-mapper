@@ -8,7 +8,8 @@ Import("env")
 try:
     import esptool
 except:
-    sys.path.append(join(env['UPLOADER'], '..'))
+    # sys.path.append(join(env['UPLOADER'], '..'))
+    env.Execute("$PYTHONEXE -m pip install esptool")
     import esptool
 
 # for item in env.Dictionary():
