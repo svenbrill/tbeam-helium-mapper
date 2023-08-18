@@ -46,7 +46,8 @@ typedef enum DisplayType_T {
 
 DisplayType_T display_type = E_DISPLAY_UNKNOWN;
 
-void screen_show_logo() {
+void screen_show_logo()
+{
     if (!display)
         return;
 
@@ -55,28 +56,32 @@ void screen_show_logo() {
     display->drawXbm(x, y, TTN_IMAGE_WIDTH, TTN_IMAGE_HEIGHT, TTN_IMAGE);
 }
 
-void screen_off() {
+void screen_off()
+{
     if (!display)
         return;
 
     display->displayOff();
 }
 
-void screen_on() {
+void screen_on()
+{
     if (!display)
         return;
 
     display->displayOn();
 }
 
-void screen_clear() {
+void screen_clear()
+{
     if (!display)
         return;
 
     display->clear();
 }
 
-void screen_print(const char *text, uint8_t x, uint8_t y, uint8_t alignment) {
+void screen_print(const char *text, uint8_t x, uint8_t y, uint8_t alignment)
+{
     DEBUG_MSG(text);
 
     if (!display)
@@ -86,11 +91,13 @@ void screen_print(const char *text, uint8_t x, uint8_t y, uint8_t alignment) {
     display->drawString(x, y, text);
 }
 
-void screen_print(const char *text, uint8_t x, uint8_t y) {
+void screen_print(const char *text, uint8_t x, uint8_t y)
+{
     screen_print(text, x, y, TEXT_ALIGN_LEFT);
 }
 
-void screen_print(const char *text) {
+void screen_print(const char *text)
+{
     Serial.printf("Screen: %s\n", text);
     if (!display)
         return;
@@ -103,7 +110,8 @@ void screen_print(const char *text) {
     // screen_loop();
 }
 
-void screen_update() {
+void screen_update()
+{
     if (display)
         display->display();
 }
@@ -116,7 +124,8 @@ void screen_update() {
  * probably means SSD1306.
  * Probably.
  */
-DisplayType_T display_get_type(uint8_t id) {
+DisplayType_T display_get_type(uint8_t id)
+{
     uint8_t err;
     uint8_t b1, b2;
 
@@ -192,7 +201,8 @@ DisplayType_T display_get_type(uint8_t id) {
 }
 
 
-void screen_setup(uint8_t addr) {
+void screen_setup(uint8_t addr)
+{
     /* Attempt to determine which kind of display we're dealing with */
     if (display_type == E_DISPLAY_UNKNOWN)
         display_type = display_get_type(addr);
@@ -212,7 +222,8 @@ void screen_setup(uint8_t addr) {
     display->setLogBuffer(4, 30);
 }
 
-void screen_end() {
+void screen_end()
+{
     if (display) {
         screen_off();
         display->end();
@@ -220,8 +231,8 @@ void screen_end() {
     }
 }
 
-#include <axp20x.h>
-extern AXP20X_Class axp;  // TODO: This is evil
+#include <XPowersLib.h>
+extern XPowersLibInterface *PMU;
 
 void screen_header(
     unsigned int tx_interval_s,
@@ -230,7 +241,8 @@ void screen_header(
     boolean      in_deadzone,
     boolean      stay_on,
     boolean      never_rest
-) {
+)
+{
     if (!display)
         return;
 
@@ -247,9 +259,8 @@ void screen_header(
         snprintf(
             buffer,
             sizeof(buffer),
-            "%.2fV  %.0fmA",
-            axp.getBattVoltage() / 1000,
-            axp.getBattChargeCurrent() - axp.getBattDischargeCurrent()
+            "%.2fV  ",
+            PMU ? PMU->getBattVoltage() / 1000.0 : 0.0
         );
 
         // display->setTextAlignment(TEXT_ALIGN_CENTER);
@@ -306,12 +317,12 @@ void screen_header(
 
     // Second status row:
     snprintf(buffer, sizeof(buffer), "%us %.0fm %c%c%c",
-        tx_interval_s,
-        min_dist_moved,
-        in_deadzone ? 'D' : ' ',
-        stay_on ? 'S' : ' ',
-        never_rest ? 'N' : ' '
-    );
+             tx_interval_s,
+             min_dist_moved,
+             in_deadzone ? 'D' : ' ',
+             stay_on ? 'S' : ' ',
+             never_rest ? 'N' : ' '
+            );
     display->setTextAlignment(TEXT_ALIGN_LEFT);
     display->drawString(0, 12, buffer);
 
@@ -328,7 +339,8 @@ void screen_body(
     const char *menu_cur,
     const char *menu_next,
     boolean     highlighted
-) {
+)
+{
     if (!display) {
         return ;
     }
