@@ -52,7 +52,7 @@ void screen_show_logo()
         return;
 
     uint8_t x = (display->getWidth() - TTN_IMAGE_WIDTH) / 2;
-    uint8_t y = SCREEN_HEADER_HEIGHT + (display->getHeight() - SCREEN_HEADER_HEIGHT - TTN_IMAGE_HEIGHT) / 2 + 1;
+    uint8_t y = (display->getHeight() - TTN_IMAGE_HEIGHT) / 2;
     display->drawXbm(x, y, TTN_IMAGE_WIDTH, TTN_IMAGE_HEIGHT, TTN_IMAGE);
 }
 
@@ -262,20 +262,13 @@ void screen_header(
             "%.2fV  ",
             PMU ? PMU->getBattVoltage() / 1000.0 : 0.0
         );
-
-        // display->setTextAlignment(TEXT_ALIGN_CENTER);
-        // display->drawString(display->getWidth() / 2, 2, buffer);
         display->setTextAlignment(TEXT_ALIGN_LEFT);
         display->drawString(0, 2, buffer);
     } else {
         // ID & Time
         if (no_gps) {
-            snprintf(buffer, sizeof(buffer), "#%03X", devid_hint);
             display->setTextAlignment(TEXT_ALIGN_LEFT);
-            display->drawString(0, 2, buffer);
-
-            display->setTextAlignment(TEXT_ALIGN_CENTER);
-            display->drawString(display->getWidth() / 2, 2, "*** NO GPS ***");
+            display->drawString(0, 2, "*** NO GPS ***");
 
             snprintf(buffer, sizeof(buffer), "(%d)", sats);
             display->setTextAlignment(TEXT_ALIGN_RIGHT);
@@ -285,8 +278,7 @@ void screen_header(
             snprintf(
                 buffer,
                 sizeof(buffer),
-                "#%03X %02d:%02d:%02d",
-                devid_hint,
+                "%02d:%02d:%02d",                
                 tGPS.time.hour(),
                 tGPS.time.minute(),
                 tGPS.time.second()

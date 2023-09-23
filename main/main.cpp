@@ -1025,8 +1025,8 @@ void setup()
 
     /** Show logo on first boot (as opposed to wake) */
     if (bootCount <= 1) {
-        screen_print(APP_NAME " " APP_VERSION, 0, 0);  // Above the Logo
-        screen_print(APP_NAME " " APP_VERSION "\n");   // Add it to the log too
+        //screen_print(APP_NAME " " APP_VERSION, 0, 0);  // Above the Logo
+        //screen_print(APP_NAME " " APP_VERSION "\n");   // Add it to the log too
 
         screen_show_logo();
         screen_update();
@@ -1291,13 +1291,6 @@ void update_activity()
     }
 }
 
-/** I must know what that interrupt was for! */
-const char *find_irq_name(void)
-{
-    const char *irq_name = "MysteryIRQ";
-    return irq_name;
-}
-
 struct menu_entry {
     const char *name;
     void (*func)(void);
@@ -1517,19 +1510,13 @@ void loop()
     // If any interrupts on PMIC, report the name
     // PEK button handler
     if (pmu_found && pmu_irq) {
-        const char *irq_name;
         pmu_irq = false;
-        uint32_t status = PMU->getIrqStatus();
-
-        irq_name = find_irq_name();
+        PMU->getIrqStatus();
 
         if (PMU->isPekeyShortPressIrq()) {
             menu_press();
         } else if (PMU->isPekeyLongPressIrq()) {  // want to turn OFF
             menu_power_off();
-        } else {
-            snprintf(buffer, sizeof(buffer), "\n* %s  ", irq_name);
-            screen_print(buffer);
         }
 
         // Clear PMU Interrupt Status Register

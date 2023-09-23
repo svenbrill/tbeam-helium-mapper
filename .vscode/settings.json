@@ -6,6 +6,11 @@
         "new": "cpp",
         "memory": "cpp",
         "istream": "cpp",
-        "functional": "cpp"
+        "functional": "cpp",
+        "array": "cpp",
+        "*.tcc": "cpp",
+        "tuple": "cpp",
+        "utility": "cpp",
+        "*.tpp": "cpp"
     }
 }
