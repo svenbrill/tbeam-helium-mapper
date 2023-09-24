@@ -1,7 +1,5 @@
 <template>
-  <div class="logo">
-
-  </div>
+  <div class="logo"></div>
   <el-menu
     default-active="2"
     :collapse="props.isCollapse"
@@ -30,29 +28,29 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from "vue";
 import {
   Document,
   Menu as IconMenu,
   Location,
   Setting,
-} from '@element-plus/icons-vue'
+} from "@element-plus/icons-vue";
 
-const props = defineProps(['isCollapse'])
+const props = defineProps(["isCollapse"]);
 const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
+  console.log(key, keyPath);
+};
 const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
+  console.log(key, keyPath);
+};
 </script>
 
 <style>
-.logo{
-  height:80px;
+.logo {
+  height: 35px;
   background: #e1eaf4;
 }
-.menu{
-  min-height: calc(100vh - 80px);
+.menu {
+  min-height: calc(100vh - 35px);
 }
 </style>

@@ -27,8 +27,8 @@
 /**
  * Version
  */
-#define APP_NAME "SbrDefi Mapper"
-#define APP_VERSION "1.7.8"  // 2022-Nov-18
+#define APP_NAME "Brillinger Mapper"
+#define APP_VERSION "Z1000"  // 2023-Sep-23
 
 /**
  * CONFIGURATION

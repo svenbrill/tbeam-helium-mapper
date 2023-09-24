@@ -12,5 +12,5 @@
         "tuple": "cpp",
         "utility": "cpp",
         "*.tpp": "cpp"
-    }
+    },
 }
