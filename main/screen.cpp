@@ -125,7 +125,7 @@ enum display_types display_get_type(uint8_t id) {
   };
   Wire.write(a, sizeof(a));
   if ((err = Wire.endTransmission(false)) != 0) {
-    Serial.printf("err=%d EndTransmission=%d(%s)", err, Wire.lastError(), Wire.getErrorText(Wire.lastError()));
+    // Serial.printf("err=%d EndTransmission=%d(%s)", err, Wire.lastError(), Wire.getErrorText(Wire.lastError()));
     return DISPLAY_UNKNOWN;
   }
 
@@ -133,7 +133,7 @@ enum display_types display_get_type(uint8_t id) {
   uint8_t b[] = {0x40, 'M', 'P'};  // co=0 DC=1 & 000000, then two bytes of data
   Wire.write(b, sizeof(b));
   if ((err = Wire.endTransmission(false)) != 0) {
-    Serial.printf("err=%d EndTransmission=%d(%s)", err, Wire.lastError(), Wire.getErrorText(Wire.lastError()));
+    // Serial.printf("err=%d EndTransmission=%d(%s)", err, Wire.lastError(), Wire.getErrorText(Wire.lastError()));
     return DISPLAY_UNKNOWN;
   }
 
@@ -141,14 +141,14 @@ enum display_types display_get_type(uint8_t id) {
   uint8_t c[] = {0, 0, 0x10}; // Back to Lower & Higher Column address 0
   Wire.write(c, sizeof(c));
   if ((err = Wire.endTransmission(false)) != 0) {
-    Serial.printf("err=%d EndTransmission=%d(%s)", err, Wire.lastError(), Wire.getErrorText(Wire.lastError()));
+    // Serial.printf("err=%d EndTransmission=%d(%s)", err, Wire.lastError(), Wire.getErrorText(Wire.lastError()));
     return DISPLAY_UNKNOWN;
   }
 
   Wire.beginTransmission(id);
   Wire.write(0x40); // Data next
   if ((err = Wire.endTransmission(false)) != 0) {
-    Serial.printf("err=%d EndTransmission=%d(%s)", err, Wire.lastError(), Wire.getErrorText(Wire.lastError()));
+    // Serial.printf("err=%d EndTransmission=%d(%s)", err, Wire.lastError(), Wire.getErrorText(Wire.lastError()));
     return DISPLAY_UNKNOWN;
   }
   err = Wire.requestFrom((int)id, (int)3, (int)1);
